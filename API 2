@@ -1,0 +1,34 @@
+# 1. Токен доступа (замени "твой_токен" на свой API Key)
+# Этот ключ позволяет API понять, что запрос отправлен именно тобой.
+API_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiIsImtpZCI6IjI4YTMxOGY3LTAwMDAtYTFlYi03ZmExLTJjNzQzM2M2Y2NhNSJ9.eyJpc3MiOiJzdXBlcmNlbGwiLCJhdWQiOiJzdXBlcmNlbGw6Z2FtZWFwaSIsImp0aSI6ImQ4OWM2N2Q1LTE5ODYtNDk0Ny05MTg5LTI4NjE2MDczNmExNyIsImlhdCI6MTczNTQ1NTYwOSwic3ViIjoiZGV2ZWxvcGVyLzliOGY2N2NhLWNlMTYtY2JmMC01NjQyLThmZmMwZGRiY2E1OSIsInNjb3BlcyI6WyJicmF3bHN0YXJzIl0sImxpbWl0cyI6W3sidGllciI6ImRldmVsb3Blci9zaWx2ZXIiLCJ0eXBlIjoidGhyb3R0bGluZyJ9LHsiY2lkcnMiOlsiMzUuMjIyLjM3LjE4MCJdLCJ0eXBlIjoiY2xpZW50In1dfQ.LGG_U1bLUaT2HSnLF5G-iEkomiUmGFMFd_JRwLIbgjy-dlyKn6AzQCGKB8g-X6NmKu3pV5fJFyBMVbJ9AOGMLQ"
+
+# 2. Тег игрока (замени "playerTag" на тег игрока без решётки, например, "8L8JQ2P")
+# Символ "#" в начале тега игрока не включаем, потому что он будет добавлен отдельно в URL в закодированном виде ("%23").
+PLAYER_TAG = "9J892GV9C"
+
+# 3. Формируем URL для запроса
+# В URL символ "#" кодируется как "%23", чтобы он был корректен для передачи в запросе.
+url = f"https://api.brawlstars.com/v1/players/%23{PLAYER_TAG}"
+
+# 4. Добавляем заголовок для авторизации (токен доступа)
+# Это нужно, чтобы сервер понял, что запрос авторизован.
+headers = {
+    "Authorization": f"Bearer {API_TOKEN}"
+}
+
+# 5. Отправляем запрос к серверу, используя библиотеку requests
+# Библиотека requests помогает нам отправить запрос и получить ответ от сервера.
+response = requests.get(url, headers=headers)
+
+# 6. Проверяем успешность запроса
+if response.status_code == 200:
+    # Данные успешно получены
+    player_data = response.json()  # Преобразуем данные в удобный формат (словарь)
+    print("=== ДАННЫЕ ОБ ИГРОКЕ ===")
+    print(f"Имя игрока: {player_data['name']}")
+    print(f"Трофеи: {player_data['trophies']}")
+    print(f"Клан: {player_data.get('club', {}).get('name', 'Без клана')}")
+else:
+    # Если код ошибки не 200, выводим описание ошибки
+    print(f"Ошибка: {response.status_code}")
+    print("Возможно, неверный токен или неправильный тег игрока.")
