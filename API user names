@@ -1,0 +1,191 @@
+import requests
+
+# === Функции для запросов к API ===
+
+def get_player_information(player_tag, api_token):
+    """Получить информацию об игроке."""
+    url = f"https://api.brawlstars.com/v1/players/%23{player_tag}"  # Кодируем # как %23
+    headers = {
+        "Authorization": f"Bearer {api_token}",
+        "Content-Type": "application/json; charset=utf-8"
+    }
+    response = requests.get(url, headers=headers)
+
+    if response.status_code == 200:
+        player_data = response.json()
+        print("=== ДАННЫЕ ОБ ИГРОКЕ ===")
+        print(f"Имя игрока: {player_data['name']}")
+        print(f"Трофеи: {player_data['trophies']}")
+        print(f"Клан: {player_data.get('club', {}).get('name', 'Без клана')}")
+    else:
+        print(f"Ошибка: {response.status_code}")
+        print(response.json())  # Выводим сообщение об ошибке для отладки
+
+def get_player_battlelog(player_tag, api_token):
+    """Получить журнал боёв игрока."""
+    url = f"https://api.brawlstars.com/v1/players/%23{player_tag}/battlelog"
+    headers = {
+        "Authorization": f"Bearer {api_token}",
+        "Content-Type": "application/json; charset=utf-8"
+    }
+    response = requests.get(url, headers=headers)
+
+    if response.status_code == 200:
+        battlelog = response.json()
+        print("=== ЖУРНАЛ БОЁВ ===")
+        for battle in battlelog.get("items", []):
+            if "battle" in battle and "result" in battle["battle"]:
+                print(f"Режим: {battle['event']['mode']}, Результат: {battle['battle']['result']}")
+            else:
+                print("Не удалось получить результат боя. Возможно, структура данных изменилась.")
+
+def get_club_information(player_tag, api_token):
+    """Получить информацию о клубе."""
+    url = f"https://api.brawlstars.com/v1/players/%23{player_tag}/battlelog"
+    headers = {
+        "Authorization": f"Bearer {api_token}",
+        "Content-Type": "application/json; charset=utf-8"
+    }
+    response = requests.get(url, headers=headers)
+
+    if response.status_code == 200:
+        battlelog = response.json()
+        print("=== ЖУРНАЛ БОЁВ ===")
+        for battle in battlelog.get("items", []):
+            if "battle" in battle and "result" in battle["battle"]:
+                print(f"Режим: {battle['event']['mode']}, Результат: {battle['battle']['result']}")
+            else:
+                print("Не удалось получить результат боя. Возможно, структура данных изменилась.")
+
+def get_club_list(player_tag, api_token):
+    """Получить список клубов."""
+    url = f"https://api.brawlstars.com/v1/players/%23{player_tag}/battlelog"
+    headers = {
+        "Authorization": f"Bearer {api_token}",
+        "Content-Type": "application/json; charset=utf-8"
+    }
+    response = requests.get(url, headers=headers)
+
+    if response.status_code == 200:
+        battlelog = response.json()
+        print("=== ЖУРНАЛ БОЁВ ===")
+        for battle in battlelog.get("items", []):
+            if "battle" in battle and "result" in battle["battle"]:
+                print(f"Режим: {battle['event']['mode']}, Результат: {battle['battle']['result']}")
+            else:
+                print("Не удалось получить результат боя. Возможно, структура данных изменилась.")
+
+def get_club_rankings_for_a_country(player_tag, api_token):
+    """Получить ранги клубов в стране"""
+    url = f"https://api.brawlstars.com/v1/players/%23{player_tag}/battlelog"
+    headers = {
+        "Authorization": f"Bearer {api_token}",
+        "Content-Type": "application/json; charset=utf-8"
+    }
+    response = requests.get(url, headers=headers)
+
+    if response.status_code == 200:
+        battlelog = response.json()
+        print("=== ЖУРНАЛ БОЁВ ===")
+        for battle in battlelog.get("items", []):
+            if "battle" in battle and "result" in battle["battle"]:
+                print(f"Режим: {battle['event']['mode']}, Результат: {battle['battle']['result']}")
+            else:
+                print("Не удалось получить результат боя. Возможно, структура данных изменилась.")
+
+def get_brawler_ranking_for_a_country(player_tag, api_token):
+    """Получить ранг бравлера в стране"""
+    url = f"https://api.brawlstars.com/v1/players/%23{player_tag}/battlelog"
+    headers = {
+        "Authorization": f"Bearer {api_token}",
+        "Content-Type": "application/json; charset=utf-8"
+    }
+    response = requests.get(url, headers=headers)
+
+    if response.status_code == 200:
+        battlelog = response.json()
+        print("=== ЖУРНАЛ БОЁВ ===")
+        for battle in battlelog.get("items", []):
+            if "battle" in battle and "result" in battle["battle"]:
+                print(f"Режим: {battle['event']['mode']}, Результат: {battle['battle']['result']}")
+            else:
+                print("Не удалось получить результат боя. Возможно, структура данных изменилась.")
+
+def get_rankings_by_country(country_code, api_token):
+    """Получить рейтинги игроков по стране."""
+    url = f"https://api.brawlstars.com/v1/rankings/{country_code}/players"
+    headers = {
+        "Authorization": f"Bearer {api_token}",
+        "Content-Type": "application/json; charset=utf-8"
+    }
+    response = requests.get(url, headers=headers)
+
+    if response.status_code == 200:
+        rankings = response.json()
+        print("=== РЕЙТИНГИ ИГРОКОВ ===")
+        for player in rankings.get("items", [])[:10]:  # Показываем топ-10
+            print(f"Имя: {player['name']}, Трофеи: {player['trophies']}")
+    else:
+        print(f"Ошибка: {response.status_code}")
+        print(response.json())
+
+def get_list_of_available_brawlers(api_token,country_code):
+    """Получить список доступных бравлеров"""
+    url = f"https://api.brawlstars.com/v1/rankings/{country_code}/players"
+    headers = {
+        "Authorization": f"Bearer {api_token}",
+        "Content-Type": "application/json; charset=utf-8"
+    }
+    response = requests.get(url, headers=headers)
+
+    if response.status_code == 200:
+        rankings = response.json()
+        print("=== СПИСОК БРАВЛЕРОВ ===")
+        for player in rankings.get("items", [])[:10]:  # Показываем топ-10
+            print(f"Имя: {player['name']}, Трофеи: {player['trophies']}")
+    else:
+        print(f"Ошибка: {response.status_code}")
+        print(response.json())
+
+def get_event_rotation(country_code, api_token):
+    """Получить информацию о бравлере"""
+    url = f"https://api.brawlstars.com/v1/rankings/{country_code}/players"
+    headers = {
+        "Authorization": f"Bearer {api_token}",
+        "Content-Type": "application/json; charset=utf-8"
+    }
+    response = requests.get(url, headers=headers)
+
+    if response.status_code == 200:
+        rankings = response.json()
+        print("=== ВРАЩЕНИЕ ИВЕНТОВ ===")
+        for player in rankings.get("items", [])[:10]:  # Показываем топ-10
+            print(f"Имя: {player['name']}, Трофеи: {player['trophies']}")
+    else:
+        print(f"Ошибка: {response.status_code}")
+        print(response.json())
+
+
+# === Основная часть программы ===
+
+if __name__ == "__main__":
+    # Токен доступа (замените на ваш реальный токен)
+    API_TOKEN = input("Введите ваш API токен: ")
+
+    # Тег игрока (замените на реальный тег игрока без решетки #)
+    PLAYER_TAG = input("Введите тег игрока (без #): ")
+
+    # Код страны (например, "ru" для России)
+    COUNTRY_CODE = "ru"
+
+    # Вызов функций
+    get_player_information(PLAYER_TAG, API_TOKEN)
+    get_player_battlelog(PLAYER_TAG, API_TOKEN)
+    get_club_information(PLAYER_TAG, API_TOKEN)
+    get_club_list(PLAYER_TAG, API_TOKEN)
+    get_club_rankings_for_a_country(COUNTRY_CODE, API_TOKEN)
+    get_brawler_ranking_for_a_country(PLAYER_TAG, API_TOKEN)
+    get_player_battlelog(PLAYER_TAG, API_TOKEN)
+    get_rankings_by_country(COUNTRY_CODE, API_TOKEN)
+    get_list_of_available_brawlers(API_TOKEN,COUNTRY_CODE)
+    get_event_rotation(API_TOKEN,COUNTRY_CODE)
