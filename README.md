@@ -1,0 +1,1 @@
+This project uses the Brawl Stars API to collect player information and display key statistics such as total trophies, progress, and profile data. I created it because I wanted to explore real game data and improve my skills in working with REST APIs, handling JSON responses, and building small data-driven applications.
